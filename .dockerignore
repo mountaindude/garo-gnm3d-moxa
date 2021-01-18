@@ -1,0 +1,17 @@
+.git/*
+.github/*
+.vscode/*
+src/.eslintrc.yml
+src/.dockerignore
+.gitignore
+src/.jshintrc
+src/.prettierignore
+src/.prettierrc
+renovate.json
+package-lock.json
+docker-compose.yml
+config/*
+src/config/*
+logs/*
+node_modules/*
+src/docker/*

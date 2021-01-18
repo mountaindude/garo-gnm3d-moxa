@@ -1,0 +1,67 @@
+EnergyMonitor:
+  # Logging configuration
+  logLevel: info     # Log level. Possible log levels are silly, debug, verbose, info, warn, error
+  fileLogging: true   # true/false to enable/disable logging to disk file
+  logDirectory: logs  # Subdirectory where log files are stored
+
+  energyMeter:
+    name: 'server_rack'
+    description: 'Energy data for servers'
+    id: 1
+    phaseCount: 3
+
+  slack:
+    webhookURL: <Slack webhook URL>
+    channel: <channel name>
+
+  # Heartbeats can be used to send "I'm alive" messages to any other tool, e.g. a infrastructure monitoring tool
+  # The concept is simple: The remoteURL will be called at the specified frequency. The receiving tool will then know 
+  # that the energy monitor is alive.
+  heartbeat:
+      enable: false
+      remoteURL: <URL which should be called>
+      frequency: 60000
+
+  # Docker health checks are used when running the energy monitor as a Docker container. 
+  # The Docker engine will call the container's health check REST endpoint with a set interval to determine
+  # whether the container is alive/well or not.
+  # If you are not using Docker you can safely disable this feature. 
+  dockerHealthCheck:
+      enable: false    # Control whether a REST endpoint will be set up to serve Docker health check messages
+      port: 12398      # Port the Docker health check service runs on (if enabled)
+
+  # Uptime monitor
+  uptimeMonitor:
+    enable: true                   # Should uptime messages be written to the console and log files?
+    frequency: 60000               #
+    logLevel: verbose              # Starting at what log level should uptime messages be shown?
+    storeInInfluxdb: 
+      enable: true
+      instanceTag: server_rack     # Tag that can be used to differentiate data from multiple instances
+
+  # Influx db config parameters
+  influxdbConfig:
+    enableInfluxdb: true
+    hostIP: <IP or FQDN of InfluxDB server>
+    hostPort: <InfluxDB port>
+    auth:
+      enable: false
+      username: <InfluxDB username>
+      password: <Pwd of user>
+    dbName: <InfluxDB database name> 
+    measurementName: energy3p
+
+    # Default retention policy that should be created in InfluxDB when the service creates a new database there. 
+    # Any data older than retention policy threshold will be purged from InfluxDB.
+    retentionPolicy:
+      name: 10d
+      duration: 10d
+
+  moxa:
+    queryInterval: 5000   # 5 sec
+    # queryInterval: 30000   # 30 sec
+    # queryInterval: 150000   # Every 2.5 min
+    # queryInterval: 300000   # Every 5 min  
+    host: <IP or Moxa serial to TCP converter>
+    port: <Port on Moxa>
+    deviceId: <RS485 device ID set in energy meter. 1 by default>
