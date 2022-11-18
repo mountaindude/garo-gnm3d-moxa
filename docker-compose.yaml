@@ -2,12 +2,12 @@
 version: '3.3'
 services:
   garo3p-server-rack:
-    image: mountaindude/garo-gnm3d-moxa:1.0.0
+    image: mountaindude/garo-gnm3d-moxa:latest
     container_name: garo3p-server-rack
     restart: always
     volumes:
       - "./config:/nodeapp/config"      # Make config file accessible outside of container
-      - "./logs:/nodeapp/logs"
+      - "./log:/nodeapp/src/log"
     environment:
       - "NODE_ENV=production"           # Read config data from production.yaml 
     logging:

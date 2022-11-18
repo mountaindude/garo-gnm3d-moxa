@@ -1,18 +1,17 @@
-'use strict';
+const Slack = require('node-slack');
 
 const globals = require('./globals');
-var slack = require('node-slack');
 
 // Slack config
-var slackWebhookURL = globals.config.get('EnergyMonitor.slack.webhookURL');
-var slackChannel = globals.config.get('EnergyMonitor.slack.channel');
+const slackWebhookURL = globals.config.get('EnergyMonitor.slack.webhookURL');
+const slackChannel = globals.config.get('EnergyMonitor.slack.channel');
 
 // Create Slack object
-var slackObj = new slack(slackWebhookURL);
+const slackObj = new Slack(slackWebhookURL);
 
 function slackPostMessage(message) {
     try {
-        if (message.length == 0) {
+        if (message.length === 0) {
             // Required parameter is missing
             globals.error('No message passed to send-to-Slack function');
         } else {

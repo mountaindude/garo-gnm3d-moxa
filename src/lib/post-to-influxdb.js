@@ -1,6 +1,5 @@
-'use strict';
-
 const globals = require('./globals');
+const slack = require('./slack');
 
 function postStatusToInfluxdb(energyData, influxTags) {
     // Build tags structure that will be passed to InfluxDB
@@ -22,7 +21,7 @@ function postStatusToInfluxdb(energyData, influxTags) {
                     pf_sys: energyData.pf_sys,
                     phase_seq_sys: energyData.phase_seq_sys,
                     hz: energyData.hz,
-            
+
                     // Total energies and dmd power
                     kwh_pos_tot: energyData.kwh_pos_tot,
                     kvarh_pos_tot: energyData.kvarh_pos_tot,
@@ -30,7 +29,7 @@ function postStatusToInfluxdb(energyData, influxTags) {
                     kvarh_neg_tot: energyData.kvarh_neg_tot,
                     kw_dmd: energyData.kw_dmd,
                     kw_dmd_peak: energyData.kw_dmd_peak,
-            
+
                     // Phase 1 (L1) variables
                     l1_v_l1_l2: energyData.l1_v_1_l2,
                     l1_v_l1_n: energyData.l1_v_l1_n,
@@ -39,7 +38,7 @@ function postStatusToInfluxdb(energyData, influxTags) {
                     l1_va: energyData.l1_va,
                     l1_var: energyData.l1_var,
                     l1_pf: energyData.l1_pf,
-            
+
                     // Phase 2 (L2) variables
                     l2_v_l2_l3: energyData.l2_v_l2_l3,
                     l2_v_l2_n: energyData.l2_v_l2_n,
@@ -48,7 +47,7 @@ function postStatusToInfluxdb(energyData, influxTags) {
                     l2_va: energyData.l2_va,
                     l2_var: energyData.l2_var,
                     l2_pf: energyData.l2_pf,
-            
+
                     // Phase 3 (L3) variables
                     l3_v_l2_l3: energyData.l3_v_l2_l3,
                     l3_v_l2_n: energyData.l3_v_l2_n,
@@ -57,7 +56,7 @@ function postStatusToInfluxdb(energyData, influxTags) {
                     l3_va: energyData.l3_va,
                     l3_var: energyData.l3_var,
                     l3_pf: energyData.l3_pf,
-            
+
                     // Other energies
                     kwh_pos_partial: energyData.kwh_pos_partial,
                     kvarh_pos_partial: energyData.kvarh_pos_partial,
@@ -66,10 +65,11 @@ function postStatusToInfluxdb(energyData, influxTags) {
                     kwh_pos_l3: energyData.kwh_pos_l3,
                     kwh_pos_t1: energyData.kwh_pos_t1,
                     kwh_pos_t2: energyData.kwh_pos_t2,
-            
+
                     // Energy meter version fields
                     firmware_version: energyData.firmware_version,
-                    firmware_revision: energyData.firmware_revision
+                    firmware_revision: energyData.firmware_revision,
+                    garo_id: energyData.garo_id,
                 },
             },
         ])
@@ -78,8 +78,10 @@ function postStatusToInfluxdb(energyData, influxTags) {
             globals.logger.verbose('ENERGY DATA: Sent data to Influxdb.');
         })
 
-        .catch(err => {
-            globals.logger.error(`ENERGY DATA: Error saving status to InfluxDB! ${err.stack}`);
+        .catch((err) => {
+            slack.slackPostMessage(`❌ POST_TO_INFLUXDB: Error saving energy data to InfluxDB: ${err.stack}`);
+
+            globals.logger.error(`POST_TO_INFLUXDB: Error saving energy data to InfluxDB: ${err.stack}`);
         });
 }
 
@@ -106,8 +108,10 @@ function postMemoryUsageToInfluxdb(memory, influxTags) {
             globals.logger.verbose('MEMORY DATA: Sent data to Influxdb.');
         })
 
-        .catch(err => {
-            globals.logger.error(`MEMORY DATA: Error saving status to InfluxDB! ${err.stack}`);
+        .catch((err) => {
+            slack.slackPostMessage(`❌ POST_TO_INFLUXDB: Error saving memory usage to InfluxDB: ${err.stack}`);
+
+            globals.logger.error(`POST_TO_INFLUXDB: Error saving memory usage to InfluxDB: ${err.stack}`);
         });
 }
 

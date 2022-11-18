@@ -1,5 +1,5 @@
-# Build Docker image for Arm64
-FROM node:12-stretch
+# Build Docker image
+FROM node:19-bullseye-slim
 
 # Add metadata about the image
 LABEL maintainer="Göran Sander mountaindude@ptarmiganlabs.com"
@@ -24,5 +24,5 @@ USER nodejs
 # Set up Docker healthcheck
 HEALTHCHECK --interval=12s --timeout=12s --start-period=30s CMD ["node", "docker-healthcheck.js"]
 
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
 

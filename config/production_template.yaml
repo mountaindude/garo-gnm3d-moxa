@@ -1,8 +1,8 @@
 EnergyMonitor:
   # Logging configuration
-  logLevel: info     # Log level. Possible log levels are silly, debug, verbose, info, warn, error
-  fileLogging: true   # true/false to enable/disable logging to disk file
-  logDirectory: logs  # Subdirectory where log files are stored
+  logLevel: info          # Log level. Possible log levels are silly, debug, verbose, info, warn, error
+  fileLogging: true       # true/false to enable/disable logging to disk file
+  logDirectory: ../logs   # Subdirectory where log files are stored
 
   energyMeter:
     name: 'server_rack'
@@ -19,8 +19,8 @@ EnergyMonitor:
   # that the energy monitor is alive.
   heartbeat:
       enable: false
-      remoteURL: <URL which should be called>
-      frequency: 60000
+      remoteURL: <URL to be called>
+      frequency: every 60 seconds         # https://bunkat.github.io/later/parsers.html
 
   # Docker health checks are used when running the energy monitor as a Docker container. 
   # The Docker engine will call the container's health check REST endpoint with a set interval to determine
@@ -31,6 +31,7 @@ EnergyMonitor:
       port: 12398      # Port the Docker health check service runs on (if enabled)
 
   # Uptime monitor
+  # This includes how long the app has been running and how memory it uses
   uptimeMonitor:
     enable: true                   # Should uptime messages be written to the console and log files?
     frequency: 60000               #
@@ -41,7 +42,7 @@ EnergyMonitor:
 
   # Influx db config parameters
   influxdbConfig:
-    enableInfluxdb: true
+    enable: true
     hostIP: <IP or FQDN of InfluxDB server>
     hostPort: <InfluxDB port>
     auth:
@@ -49,7 +50,7 @@ EnergyMonitor:
       username: <InfluxDB username>
       password: <Pwd of user>
     dbName: <InfluxDB database name> 
-    measurementName: energy3p
+    measurementName: energy_server_rack
 
     # Default retention policy that should be created in InfluxDB when the service creates a new database there. 
     # Any data older than retention policy threshold will be purged from InfluxDB.

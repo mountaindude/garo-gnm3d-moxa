@@ -1,0 +1,78 @@
+name: release-please
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      release_tag_name: ${{ steps.release.outputs['tag_name'] }}
+      release_upload_url: ${{ steps.release.outputs['upload_url'] }}
+    env:
+      GITHUB_REF: ${{ github.ref }}
+      GITHUB_TOKEN: ${{ secrets.PAT }}
+      DIST_FILE_NAME: garo-gnm3d-moxa
+    steps:
+      - name: Show github.ref
+        run: echo "$GITHUB_REF"
+        
+      # - name: Install tools
+      #   run: sudo apt-get install jq
+
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        if: |
+          github.repository_owner == 'mountaindude' 
+        with:
+          command: manifest
+
+      - name: Show output from Release-Please
+        if: always()
+        env:
+          RELEASE_PLEASE_OUTPUT: ${{ toJSON(steps.release.outputs) }}
+        # echo "All outputs     : ${{ toJSON(steps.release.outputs) }}"
+        # run: echo ${{ toJSON(steps.release.outputs) }}
+        run: echo "$RELEASE_PLEASE_OUTPUT"
+
+      - name: Show output from Release-Please
+        # if: ${{ steps.release.outputs.releases_created }}
+        run: |
+          echo "release_created : ${{ steps.release.outputs.release_created }}"
+          echo "releases_created: ${{ steps.release.outputs.releases_created }}"
+          echo "draft           : ${{ steps.release.outputs['draft'] }}"
+          echo "path            : ${{ steps.release.outputs['path'] }}"
+          echo "upload_url      : ${{ steps.release.outputs['upload_url'] }}"
+          echo "html_url        : ${{ steps.release.outputs['html_url'] }}"
+          echo "tag_name        : ${{ steps.release.outputs['tag_name'] }}"
+          echo "version         : ${{ steps.release.outputs['version'] }}"
+          echo "major           : ${{ steps.release.outputs['major'] }}"
+          echo "minor           : ${{ steps.release.outputs['minor'] }}"
+          echo "patch           : ${{ steps.release.outputs['patch'] }}"
+          echo "sha             : ${{ steps.release.outputs['sha'] }}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          cd src
+          npm install
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --file=./package.json --sarif-file-output=snyk.sarif
+          # command: test
+          
+      - name: Upload Snyk result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif

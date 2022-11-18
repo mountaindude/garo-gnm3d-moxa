@@ -1,9 +1,10 @@
-src/node_modules/*
-src/config/production.*
-src/config/development.*
+node_modules
+config/production.*
+config/development.*
 npm-debug.log
 .DS_Store
-logs/*
+logs
+log
 
 
 
