@@ -22,7 +22,7 @@ RUN groupadd -r nodejs \
 USER nodejs
 
 # Set up Docker healthcheck
-HEALTHCHECK --interval=12s --timeout=12s --start-period=30s CMD ["node", "docker-healthcheck.js"]
+# HEALTHCHECK --interval=12s --timeout=12s --start-period=30s CMD ["node", "docker-healthcheck.js"]
 
 CMD ["node", "src/index.js"]
 

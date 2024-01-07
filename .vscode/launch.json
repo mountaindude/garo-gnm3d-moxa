@@ -10,7 +10,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/src/index.js",
-      "runtimeVersion": "19",
+      "runtimeVersion": "20",
       "cwd": "${workspaceFolder}",
       "env": {
         "NODE_CONFIG_DIR": "${workspaceFolder}/config",
