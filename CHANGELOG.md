@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/mountaindude/garo-gnm3d-moxa/compare/garo-gnm3d-moxa-v1.0.1...garo-gnm3d-moxa-v1.0.2) (2024-01-07)
+
+
+### Miscellaneous
+
+* **deps:** update docker/login-action action to v3 ([d9ea66e](https://github.com/mountaindude/garo-gnm3d-moxa/commit/d9ea66e896c2c5782b9a9ed794fb7098a935ec17))
+* **deps:** update docker/metadata-action action to v5 ([595a526](https://github.com/mountaindude/garo-gnm3d-moxa/commit/595a526199339d1b549c703774316214a0ea3e65))
+
 ## [1.0.1](https://github.com/mountaindude/garo-gnm3d-moxa/compare/garo-gnm3d-moxa-v1.0.0...garo-gnm3d-moxa-v1.0.1) (2024-01-07)
 
 
