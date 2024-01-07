@@ -25,7 +25,7 @@ Other serial-to-TCP Moxa devices might also work too - they have a pretty wide p
 
 ### Software
 
-- The code is developed and tested against Node.js 14.5.3.
+- The code is developed and tested against Node.js 20.
 - The service can be run as a native Node.js app, but Docker is by far the preferred option for running the service. Kubernetes also works really well, but requries more infrastructure, setup etc.
 - Docker images (mountaindude/garo-gnm3d-moxa) is available from Docker hub. It's automatically updated as new releases are done here on GitHub.
 - An InfluxDB database is needed. InfluxDB runs very nicely as a Docker container (just make sure to store the actual data outside of the InfluxDB container, so it's not lost if the InfluxDB container is recreated).
