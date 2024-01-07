@@ -1,6 +1,6 @@
 {
   "name": "garo-gnm3d-moxa",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Extracts energy metrics from a Garo 3-phase energy meter GNM3D-RS485 connected via a Moxa RS485 > TCP gateway",
   "main": "./src/index.js",
   "scripts": {
